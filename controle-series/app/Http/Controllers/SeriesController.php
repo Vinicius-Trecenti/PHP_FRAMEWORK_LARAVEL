@@ -17,6 +17,12 @@ class SeriesController {
         // ]);
 
         //mais simpes e passando pra ela somento oq deve enviar que a variavel $series
-        return view('listar-series',compact('series'));
+        //return view('listar-series',compact('series'));
+        return view('series.index') ->with ('series', $series);
     }
+
+    public function create(){
+        return view('series.create');
+    }
+
 }

@@ -1,0 +1,1 @@
+<h1>TESTE DE VIEW E Controllers com laravel</h1>
