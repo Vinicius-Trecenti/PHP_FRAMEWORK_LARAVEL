@@ -15,9 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [SeriesController::class, 'index']);
 
 Route::get('/ola', function () {
     echo 'Ola Mundo, laravel';
