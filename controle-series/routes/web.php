@@ -21,8 +21,22 @@ Route::get('/ola', function () {
     echo 'Ola Mundo, laravel';
 });
 
-Route::get('/series', [SeriesController::class, 'index']);
+Route::resource('/series', SeriesController::class);
 
-Route::get('/teste', [teste::class, 'index']);
-Route::get('series/criar', [SeriesController::class,'create']);
-Route::post('series/salvar', [SeriesController::class,'store']);
+
+// Route::controller(SeriesController::class)->group(function(){
+//     //exibe as series
+//     Route::get('/series', 'index')->name('series.index');
+
+//     //pagina de criação
+//     Route::get('series/create', 'create')->name('series.create');
+
+//     //metodo para criar no banco e salvar
+//     Route::post('series/salvar','store')->name('series.store');
+// });
+
+// Route::get('/series', [SeriesController::class, 'index']);
+
+// Route::get('/teste', [teste::class, 'index']);
+// Route::get('series/criar', [SeriesController::class,'create']);
+// Route::post('series/salvar', [SeriesController::class,'store']);

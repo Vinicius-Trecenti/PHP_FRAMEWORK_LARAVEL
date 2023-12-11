@@ -36,18 +36,24 @@ class SeriesController extends Controller{
     }
 
     public function create(){
-        return view('series.create');
+        return view('series.create'); 
     }
 
     public function store(Request $request){
 
-        $nomeSerie = $request->input('nome');
+        // $nomeSerie = $request->input('nome');
 
-        $serie = new Serie();
-        $serie->nome = $nomeSerie;
-        $serie->save();
+        // $serie = new Serie();
+        // $serie->nome = $nomeSerie;
+        // $serie->save();
 
-        return redirect('/series')->with('success');
+        //essa parte envia para o banco criar, porem precisa declarar no model que o token nao vai
+        Serie::create($request->all(''));
+        //dd($request->all());
+
+        //tipos de redirect
+        // return redirect(route('series.index'));
+        return to_route('series.index');
 
 
         // if(DB::insert('INSERT INTO series (nome) VALUES (?)', [$nomeSerie])){
