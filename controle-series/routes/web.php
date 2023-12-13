@@ -21,7 +21,15 @@ Route::get('/ola', function () {
     echo 'Ola Mundo, laravel';
 });
 
-Route::resource('/series', SeriesController::class);
+Route::resource('/series', SeriesController::class)
+
+    ->only(['index', 'create', 'store' ,'destroy']
+
+);
+
+// Route::delete('/series/destroy/{serie}', [SeriesController::class,'destroy']) ->name('series.destroy');
+
+// Route::post('/series/destroy/{serie}', [SeriesController::class, 'destroy'])->name('series.destroy');
 
 
 // Route::controller(SeriesController::class)->group(function(){

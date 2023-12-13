@@ -14,6 +14,10 @@ class SeriesController extends Controller{
         //$series = Serie::all();
         $series = Serie::query()->orderBy('nome')->get();
 
+        $mensagemSucesso = $request->session()->get('mensagem.sucesso');
+
+        $request->session()->forget('mensagem.sucesso');
+
         //retorna uma query - coleçao que pegamos com o metodo get
         //temos o query()->orderBy('nome', 'desc')->get();
        
@@ -31,8 +35,9 @@ class SeriesController extends Controller{
         //Uma forma de consultar o banco
        //$series = DB::select('SELECT nome FROM series');
 
+
        
-       return view('series.index') ->with ('series', $series);
+       return view('series.index')->with('series', $series)->with('mensagemSucesso', $mensagemSucesso);
     }
 
     public function create(){
@@ -49,6 +54,9 @@ class SeriesController extends Controller{
 
         //essa parte envia para o banco criar, porem precisa declarar no model que o token nao vai
         Serie::create($request->all(''));
+
+        //com erro porem funciona a funcao flash
+        $request->session()->flash('mensagem.sucesso','Série criada com sucesso');
         //dd($request->all());
 
         //tipos de redirect
@@ -67,6 +75,16 @@ class SeriesController extends Controller{
         // }else{ 
         //     return "Erro na inserção da serie";
         // }
+    }
+
+    public function destroy(Request $request){
+
+        // dd($request->route());
+        Serie::destroy($request->series);
+        $request->session()->put('mensagem.sucesso','Série removida');
+        // $request->session()->flash('mensagem.sucesso','Série removida com sucesso');
+
+        return to_route('series.index');
     }
 
 }
