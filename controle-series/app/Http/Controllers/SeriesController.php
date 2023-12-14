@@ -53,10 +53,11 @@ class SeriesController extends Controller{
         // $serie->save();
 
         //essa parte envia para o banco criar, porem precisa declarar no model que o token nao vai
-        Serie::create($request->all(''));
+        $seriecriada = Serie::create($request->all());
+
 
         //com erro porem funciona a funcao flash
-        $request->session()->flash('mensagem.sucesso','Série criada com sucesso');
+        $request->session()->flash('mensagem.sucesso',"Série '{$seriecriada->nome}' criada com sucesso");
         //dd($request->all());
 
         //tipos de redirect
@@ -77,12 +78,25 @@ class SeriesController extends Controller{
         // }
     }
 
-    public function destroy(Request $request){
+    //O laravel se localiza por nomes, podemos passar tanto um model, quanto um int $serie como id
+    //ou podemos usar o request normalmente
+
+    public function destroy(Request $request, Serie $series){
+
+        // $seriedeletada = Serie::find($request->series);
+        // dd($seriedeletada);
+        
+        $series->delete();
 
         // dd($request->route());
-        Serie::destroy($request->series);
-        $request->session()->put('mensagem.sucesso','Série removida');
+        // Serie::destroy($request->series);
+        $serieremovida = $request->series->Nome;
+
+        
+        $request->session()->flash('mensagem.sucesso', "Série: '{$serieremovida}'removida com sucesso");
         // $request->session()->flash('mensagem.sucesso','Série removida com sucesso');
+
+        
 
         return to_route('series.index');
     }
