@@ -2,6 +2,8 @@
 
 
 namespace App\Http\Controllers;
+
+use App\Http\Requests\SeriesFormRequest;
 use App\Models\Serie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -44,7 +46,7 @@ class SeriesController extends Controller{
         return view('series.create'); 
     }
 
-    public function store(Request $request){
+    public function store(SeriesFormRequest $request){
 
         // $nomeSerie = $request->input('nome');
 
@@ -53,6 +55,11 @@ class SeriesController extends Controller{
         // $serie->save();
 
         //essa parte envia para o banco criar, porem precisa declarar no model que o token nao vai
+        // $request->validate([
+        //     'nome'=> ['required', 'min:3']
+        // ]);
+
+        //TODOS OS DADOS CONTINUAM FUNCIONANDO COM O NOVO REQUEST -> POSSUINDO APENAS A VALIDAÇÃO INCLUIODA
         $seriecriada = Serie::create($request->all());
 
 
@@ -93,12 +100,28 @@ class SeriesController extends Controller{
         $serieremovida = $request->series->Nome;
 
         
-        $request->session()->flash('mensagem.sucesso', "Série: '{$serieremovida}'removida com sucesso");
+        //$request->session()->flash('mensagem.sucesso', "Série: '{$serieremovida}'removida com sucesso");
         // $request->session()->flash('mensagem.sucesso','Série removida com sucesso');
 
         
+        //posso retornar a flash mensg com with e os parametros alem de variaveis.
+        return to_route('series.index')->with('mensagem.sucesso', "Série: '{$serieremovida}' removida com sucesso");
+    }
 
-        return to_route('series.index');
+    public function edit(Serie $series){
+        
+        return view('series.edit')->with('serie', $series);
+    }
+ 
+    public function update(SeriesFormRequest $request, Serie $series){
+
+        // $series->nome = $request->nome;
+        // $series->save();
+
+        $series->fill($request->all());
+        $series->save();
+
+        return to_route('series.index')->with('mensagem.sucesso', "Série {$series->nome} atualizada");
     }
 
 }

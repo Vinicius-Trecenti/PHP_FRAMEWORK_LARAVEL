@@ -1,5 +1,7 @@
-<x-layout title="Nova Série">
-    <form action="{{route('series.store')}}" method="post">
+<x-layout title="Criando série">
+    <x-series.form :action="route('series.store')" :nome="old('nome')" :update="false"/>
+
+    <!-- <form action="{{route('series.store')}}" method="post">
         @csrf
         <div class="mb-3">
             <label for="nome" class="form-label">Nome:</label>
@@ -7,5 +9,5 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Adicionar</button>
-    </form>
+    </form> -->
 </x-layout>

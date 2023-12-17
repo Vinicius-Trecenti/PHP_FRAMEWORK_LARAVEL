@@ -22,10 +22,11 @@ Route::get('/ola', function () {
 });
 
 Route::resource('/series', SeriesController::class)
-
-    ->only(['index', 'create', 'store' ,'destroy']
-
+    ->only(['index', 'create', 'store' ,'destroy', 'edit', 'update']
 );
+// Route::get('/series/edit/{id}', [SeriesController::class,'edit'])->name('series.edit');
+// Route::post('/series/edit/{id}', [SeriesController::class, 'edit'])->name('series.edit');
+// Route::post('/series/update/{id}', [SeriesController::class, 'update'])->name('series.update');
 
 // Route::delete('/series/destroy/{serie}', [SeriesController::class,'destroy']) ->name('series.destroy');
 
