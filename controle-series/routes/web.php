@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\SeriesController;
+use App\Http\Controllers\SeasonsController;
+
 use App\Http\Controllers\teste;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +26,9 @@ Route::get('/ola', function () {
 Route::resource('/series', SeriesController::class)
     ->only(['index', 'create', 'store' ,'destroy', 'edit', 'update']
 );
+
+Route::get('/series/{series}/seasons', [SeasonsController::class, 'index'])->name('seasons.index');
+
 // Route::get('/series/edit/{id}', [SeriesController::class,'edit'])->name('series.edit');
 // Route::post('/series/edit/{id}', [SeriesController::class, 'edit'])->name('series.edit');
 // Route::post('/series/update/{id}', [SeriesController::class, 'update'])->name('series.update');

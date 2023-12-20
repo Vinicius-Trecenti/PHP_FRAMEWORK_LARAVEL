@@ -12,7 +12,10 @@
 
         @foreach ($series as $serie)
         <li class="list-group-item d-flex justify-content-between align-items-center" >
-            {{ $serie->Nome}}
+            <a href="{{ route('seasons.index', $serie->id)}}"> 
+                {{ $serie->Nome}}
+            </a>
+
             <span class="d-flex">
 
 

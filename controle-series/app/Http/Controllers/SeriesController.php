@@ -4,7 +4,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SeriesFormRequest;
-use App\Models\Serie;
+use App\Models\Series;
+use App\Models\Episode;
+use App\Models\Season;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use LDAP\Result;
@@ -14,7 +17,9 @@ class SeriesController extends Controller{
 
         //um select no banco de dados
         //$series = Serie::all();
-        $series = Serie::query()->orderBy('nome')->get();
+        // $series = Serie::query()->orderBy('nome')->get();
+
+        $series = Series::with(['seasons'])->get();
 
         $mensagemSucesso = $request->session()->get('mensagem.sucesso');
 
@@ -46,49 +51,123 @@ class SeriesController extends Controller{
         return view('series.create'); 
     }
 
-    public function store(SeriesFormRequest $request){
+    //algum erro na hora de inserir no banco de dados
+    // public function store(SeriesFormRequest $request){
 
-        // $nomeSerie = $request->input('nome');
+    //     // $nomeSerie = $request->input('nome');
 
-        // $serie = new Serie();
-        // $serie->nome = $nomeSerie;
-        // $serie->save();
+    //     // $serie = new Serie();
+    //     // $serie->nome = $nomeSerie;
+    //     // $serie->save();
 
-        //essa parte envia para o banco criar, porem precisa declarar no model que o token nao vai
-        // $request->validate([
-        //     'nome'=> ['required', 'min:3']
-        // ]);
+    //     //essa parte envia para o banco criar, porem precisa declarar no model que o token nao vai
+    //     // $request->validate([
+    //     //     'nome'=> ['required', 'min:3']
+    //     // ]);
 
-        //TODOS OS DADOS CONTINUAM FUNCIONANDO COM O NOVO REQUEST -> POSSUINDO APENAS A VALIDAÇÃO INCLUIODA
-        $seriecriada = Serie::create($request->all());
+    //     //TODOS OS DADOS CONTINUAM FUNCIONANDO COM O NOVO REQUEST -> POSSUINDO APENAS A VALIDAÇÃO INCLUIODA
+    //     $seriecriada = Series::create($request->all());
+
+        
+    //     $season = [];
+    //     //para cada temporada
+    //     for($i = 1; $i <= $request->seasonQty; $i++){
+    //         //criar no banco a temporada - utilizando o relacionamento
+    //         $season[] = [
+    //             'series_id' => $seriecriada->id,
+    //             'number' => $i,
+    //         ];
+
+    //         // $season = $seriecriada->seasons()->create([
+    //         //     'number' => $i,
+    //         // ]);
+
+    //     }
+    //     //inserindo passando o array com as temporadas
+    //     Season::insert($season);
+
+    //         // $season = $seriecriada->seasons()->create([
+    //         //     'number' => $i,
+    //         // ]);
+
+    //         //para cada temporada criar os episodios
+
+    //     //buscar todas as seasons
+    //     $episodes = [];
+    //     foreach($seriecriada->seasons as $season){
+
+    //         for($j = 1; $j<= $request->episodesPerSeason; $j++){
+    //             //criando os episodios
+    //             //porem temos que configurar o mass assignment 
+    //             $episodes[] = [
+    //                 'season_id' => $season->id,
+    //                 'number' => $j,
+    //             ];
+                
+    //         }
+    //     }
+
+    //     Episode::insert($episodes);
+
+        
 
 
-        //com erro porem funciona a funcao flash
-        $request->session()->flash('mensagem.sucesso',"Série '{$seriecriada->nome}' criada com sucesso");
-        //dd($request->all());
+            
+        
 
-        //tipos de redirect
-        // return redirect(route('series.index'));
-        return to_route('series.index');
+    //     //com erro porem funciona a funcao flash
+    //     $request->session()->flash('mensagem.sucesso',"Série '{$seriecriada->nome}' criada com sucesso");
+    //     //dd($request->all());
+
+    //     //tipos de redirect
+    //     // return redirect(route('series.index'));
+    //     return to_route('series.index');
 
 
-        // if(DB::insert('INSERT INTO series (nome) VALUES (?)', [$nomeSerie])){
-        //     return redirect('/series')->with('success');
-        // }else{
-        //     return "Erro na inserção";
-        // };
+    //     // if(DB::insert('INSERT INTO series (nome) VALUES (?)', [$nomeSerie])){
+    //     //     return redirect('/series')->with('success');
+    //     // }else{
+    //     //     return "Erro na inserção";
+    //     // };
 
-        // if (DB::insert('INSERT INTO series (nome) VALUES (?)', [$nomeSerie])){
-        //     return "Serie inserida!";
-        // }else{ 
-        //     return "Erro na inserção da serie";
-        // }
-    }
+    //     // if (DB::insert('INSERT INTO series (nome) VALUES (?)', [$nomeSerie])){
+    //     //     return "Serie inserida!";
+    //     // }else{ 
+    //     //     return "Erro na inserção da serie";
+    //     // }
+    // }
 
     //O laravel se localiza por nomes, podemos passar tanto um model, quanto um int $serie como id
     //ou podemos usar o request normalmente
 
-    public function destroy(Request $request, Serie $series){
+    public function store(SeriesFormRequest $request)
+    {
+        $serie = Series::create($request->all());
+        $seasons = [];
+        for ($i = 1; $i <= $request->seasonsQty; $i++) {
+            $seasons[] = [
+                'series_id' => $serie->id,
+                'number' => $i,
+            ];
+        }
+        Season::insert($seasons);
+
+        $episodes = [];
+        foreach ($serie->seasons as $season) {
+            for ($j = 1; $j <= $request->episodesPerSeason; $j++) {
+                $episodes[] = [
+                    'season_id' => $season->id,
+                    'number' => $j
+                ];
+            }
+        }
+        Episode::insert($episodes);
+
+        return to_route('series.index')
+            ->with('mensagem.sucesso', "Série '{$serie->nome}' adicionada com sucesso");
+    }
+
+    public function destroy(Request $request, Series $series){
 
         // $seriedeletada = Serie::find($request->series);
         // dd($seriedeletada);
@@ -108,12 +187,13 @@ class SeriesController extends Controller{
         return to_route('series.index')->with('mensagem.sucesso', "Série: '{$serieremovida}' removida com sucesso");
     }
 
-    public function edit(Serie $series){
+    public function edit(Series $series){
+         
         
         return view('series.edit')->with('serie', $series);
     }
  
-    public function update(SeriesFormRequest $request, Serie $series){
+    public function update(SeriesFormRequest $request, Series $series){
 
         // $series->nome = $request->nome;
         // $series->save();
