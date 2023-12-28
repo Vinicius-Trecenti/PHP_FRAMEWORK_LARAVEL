@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 
 namespace App\Http\Controllers;
@@ -7,13 +7,23 @@ use App\Http\Requests\SeriesFormRequest;
 use App\Models\Series;
 use App\Models\Episode;
 use App\Models\Season;
-
+use App\Repositories\SeriesRepository;
+use Illuminate\Foundation\Events\PublishingStubs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use LDAP\Result;
 
-class SeriesController extends Controller{
-    public function index(Request $request){
+class SeriesController extends Controller
+{
+
+    //contrutor
+    public function __construct(private SeriesRepository $repository){
+
+    }
+
+
+    public function index(Request $request)
+    {
 
         //um select no banco de dados
         //$series = Serie::all();
@@ -27,7 +37,7 @@ class SeriesController extends Controller{
 
         //retorna uma query - coleçao que pegamos com o metodo get
         //temos o query()->orderBy('nome', 'desc')->get();
-       
+
         //var_dump($series);
         //dd($series);//importante para debugar -> encerra a view
 
@@ -40,15 +50,16 @@ class SeriesController extends Controller{
         //return view('listar-series',compact('series'));
 
         //Uma forma de consultar o banco
-       //$series = DB::select('SELECT nome FROM series');
+        //$series = DB::select('SELECT nome FROM series');
 
 
-       
-       return view('series.index')->with('series', $series)->with('mensagemSucesso', $mensagemSucesso);
+
+        return view('series.index')->with('series', $series)->with('mensagemSucesso', $mensagemSucesso);
     }
 
-    public function create(){
-        return view('series.create'); 
+    public function create()
+    {
+        return view('series.create');
     }
 
     //algum erro na hora de inserir no banco de dados
@@ -68,7 +79,7 @@ class SeriesController extends Controller{
     //     //TODOS OS DADOS CONTINUAM FUNCIONANDO COM O NOVO REQUEST -> POSSUINDO APENAS A VALIDAÇÃO INCLUIODA
     //     $seriecriada = Series::create($request->all());
 
-        
+
     //     $season = [];
     //     //para cada temporada
     //     for($i = 1; $i <= $request->seasonQty; $i++){
@@ -103,17 +114,17 @@ class SeriesController extends Controller{
     //                 'season_id' => $season->id,
     //                 'number' => $j,
     //             ];
-                
+
     //         }
     //     }
 
     //     Episode::insert($episodes);
 
-        
 
 
-            
-        
+
+
+
 
     //     //com erro porem funciona a funcao flash
     //     $request->session()->flash('mensagem.sucesso',"Série '{$seriecriada->nome}' criada com sucesso");
@@ -140,60 +151,45 @@ class SeriesController extends Controller{
     //O laravel se localiza por nomes, podemos passar tanto um model, quanto um int $serie como id
     //ou podemos usar o request normalmente
 
-    public function store(SeriesFormRequest $request)
-    {
-        $serie = Series::create($request->all());
-        $seasons = [];
-        for ($i = 1; $i <= $request->seasonsQty; $i++) {
-            $seasons[] = [
-                'series_id' => $serie->id,
-                'number' => $i,
-            ];
-        }
-        Season::insert($seasons);
+    public function store(SeriesFormRequest $request, SeriesRepository $repository){
 
-        $episodes = [];
-        foreach ($serie->seasons as $season) {
-            for ($j = 1; $j <= $request->episodesPerSeason; $j++) {
-                $episodes[] = [
-                    'season_id' => $season->id,
-                    'number' => $j
-                ];
-            }
-        }
-        Episode::insert($episodes);
+        //  $serie = $repository->add($request);
+        $serie = $this->repository->add($request);
 
-        return to_route('series.index')
-            ->with('mensagem.sucesso', "Série '{$serie->nome}' adicionada com sucesso");
+
+        return to_route('series.index')->with('mensagem.sucesso', "Série '{$serie->nome}' adicionada com sucesso");
     }
 
-    public function destroy(Request $request, Series $series){
+    public function destroy(Request $request, Series $series)
+    {
 
         // $seriedeletada = Serie::find($request->series);
         // dd($seriedeletada);
-        
+
         $series->delete();
 
         // dd($request->route());
         // Serie::destroy($request->series);
         $serieremovida = $request->series->Nome;
 
-        
+
         //$request->session()->flash('mensagem.sucesso', "Série: '{$serieremovida}'removida com sucesso");
         // $request->session()->flash('mensagem.sucesso','Série removida com sucesso');
 
-        
+
         //posso retornar a flash mensg com with e os parametros alem de variaveis.
         return to_route('series.index')->with('mensagem.sucesso', "Série: '{$serieremovida}' removida com sucesso");
     }
 
-    public function edit(Series $series){
-         
-        
+    public function edit(Series $series)
+    {
+
+
         return view('series.edit')->with('serie', $series);
     }
- 
-    public function update(SeriesFormRequest $request, Series $series){
+
+    public function update(SeriesFormRequest $request, Series $series)
+    {
 
         // $series->nome = $request->nome;
         // $series->save();
@@ -203,5 +199,4 @@ class SeriesController extends Controller{
 
         return to_route('series.index')->with('mensagem.sucesso', "Série {$series->nome} atualizada");
     }
-
 }
