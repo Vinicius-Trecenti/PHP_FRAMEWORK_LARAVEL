@@ -7,11 +7,10 @@ use App\Http\Requests\SeriesFormRequest;
 use App\Models\Series;
 use App\Models\Episode;
 use App\Models\Season;
-use App\Repositories\SeriesRepository;
-use Illuminate\Foundation\Events\PublishingStubs;
+use App\Repositories\EloquentSeriesRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use LDAP\Result;
+use App\Repositories\SeriesRepository;
 
 class SeriesController extends Controller
 {
@@ -151,7 +150,7 @@ class SeriesController extends Controller
     //O laravel se localiza por nomes, podemos passar tanto um model, quanto um int $serie como id
     //ou podemos usar o request normalmente
 
-    public function store(SeriesFormRequest $request, SeriesRepository $repository){
+    public function store(SeriesFormRequest $request, EloquentSeriesRepository $repository){
 
         //  $serie = $repository->add($request);
         $serie = $this->repository->add($request);

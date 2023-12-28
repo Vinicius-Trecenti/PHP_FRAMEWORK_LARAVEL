@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Episode extends Model
 {
     use HasFactory;
+    protected $casts = ['watched' => 'boolean'];
+    
     protected $fillable = ['number'];
 
     //para dizer que nao vamos utilizar os timestamps
