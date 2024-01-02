@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\EpisodesController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\SeriesController;
 use App\Http\Controllers\SeasonsController;
 
 use App\Http\Controllers\teste;
+use App\Http\Controllers\UsersController;
+use App\Http\Middleware\Autenticador;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [SeriesController::class, 'index']);
+Route::get('/', [SeriesController::class, 'index'])->middleware(Autenticador::class);
 
 Route::get('/ola', function () {
     echo 'Ola Mundo, laravel';
@@ -33,7 +36,13 @@ Route::get('/series/{series}/seasons', [SeasonsController::class, 'index'])->nam
 Route::get('/season/{season}/episodes', [EpisodesController::class, 'index'])->name('episodes.index');
 
 Route::post('/season/{season}/episodes', [EpisodesController::class, 'update']);
-  
+
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/login', [LoginController::class, 'store'])->name('sigin');
+Route::get('register', [UsersController::class, 'create'])->name('users.create');
+Route::post('register', [UsersController::class, 'store'])->name('users.store');
+
+
 // Route::get('/series/edit/{id}', [SeriesController::class,'edit'])->name('series.edit');
 // Route::post('/series/edit/{id}', [SeriesController::class, 'edit'])->name('series.edit');
 // Route::post('/series/update/{id}', [SeriesController::class, 'update'])->name('series.update');
