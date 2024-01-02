@@ -16,3 +16,7 @@ Aprendendo a usar o Framework Laravel - PHP
 - Como podemos exibir todos os erros de validação em views - variavavel $errors
 - Aprendendo sobre criação de request - e validação de erros
 - Transações no laravel - basico
+- Entendendo o que é um middleware
+- Definindo regras para realizar login
+- Criando o cadastro de usuário
+- Implementando um logout

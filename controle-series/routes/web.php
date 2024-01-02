@@ -42,6 +42,8 @@ Route::post('/login', [LoginController::class, 'store'])->name('sigin');
 Route::get('register', [UsersController::class, 'create'])->name('users.create');
 Route::post('register', [UsersController::class, 'store'])->name('users.store');
 
+Route::get('/logout', [LoginController::class, 'destroy'])->name('logout');
+
 
 // Route::get('/series/edit/{id}', [SeriesController::class,'edit'])->name('series.edit');
 // Route::post('/series/edit/{id}', [SeriesController::class, 'edit'])->name('series.edit');
