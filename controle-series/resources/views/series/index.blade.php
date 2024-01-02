@@ -1,5 +1,7 @@
 <x-layout title="Séries">
+    @auth
     <a href="{{ route('series.create') }}" class="btn btn-dark mb-2">Adicionar</a>
+    @endauth
 
     @isset($mensagemSucesso)
     <div class="alert alert-success">
@@ -12,19 +14,22 @@
 
         @foreach ($series as $serie)
         <li class="list-group-item d-flex justify-content-between align-items-center" >
-            <a href="{{ route('seasons.index', $serie->id)}}"> 
+        
+            @auth<a href="{{ route('seasons.index', $serie->id)}}">@endauth
                 {{ $serie->Nome}}
             </a>
-
+            
+            
+            @auth
             <span class="d-flex">
 
-
+                
                 <a href="{{route('series.edit', $serie->id)}}">
                     <button class="btn btn-primary btn-sm">
                         edit
                     </button>
                 </a>
-                
+    
 
                 <form action="{{route('series.destroy', $serie->id)}}" method="post" class="ms-2">
                     @csrf
@@ -34,6 +39,8 @@
                     </button>  
                 </form>
             </span>
+            @endauth
+
         </li>
         @endforeach
 
