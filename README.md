@@ -20,3 +20,6 @@ Aprendendo a usar o Framework Laravel - PHP
 - Definindo regras para realizar login
 - Criando o cadastro de usuário
 - Implementando um logout
+- Criar classes Mailable com Laravel
+- Como enviar e-mails utilizando Laravel
+- Ferramenta mailtrap

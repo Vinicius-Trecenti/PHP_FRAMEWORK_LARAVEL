@@ -8,6 +8,7 @@ use App\Http\Controllers\SeasonsController;
 use App\Http\Controllers\teste;
 use App\Http\Controllers\UsersController;
 use App\Http\Middleware\Autenticador;
+use App\Mail\SeriesCreated;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
@@ -37,6 +38,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::get('/email', function(){
+    return new SeriesCreated('Teste', 18, 10, 20);
 });
 
 require __DIR__.'/auth.php';
