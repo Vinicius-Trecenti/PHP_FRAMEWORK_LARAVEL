@@ -159,17 +159,24 @@ class SeriesController extends Controller
         //  $serie = $repository->add($request);
         $serie = $this->repository->add($request);
 
+        //pegando todos os usuarios
         $userList = User::all();
 
-        foreach ($userList as $user){
+        //para cada usuario criando um email e enviando
+        foreach ($userList as $index =>$user){
             $email = new SeriesCreated(
                 $serie->nome,
                 $serie->id,
                 $request->seasonsQty,
                 $request->episodesPerSeason,
             );
-            Mail::to($user)->send($email);
-            sleep(2);
+            // Mail::to($user)->send($email);
+
+            //agendando um email
+            $when = now()->addSeconds($index * 5);
+            Mail::to($user)->later($when, $email);
+            // Mail::to($user)->queue($email);
+            //sleep(2);
         }
 
         // $email = new SeriesCreated(

@@ -23,3 +23,5 @@ Aprendendo a usar o Framework Laravel - PHP
 - Criar classes Mailable com Laravel
 - Como enviar e-mails utilizando Laravel
 - Ferramenta mailtrap
+- Adiar o envio do e-mail
+- Como configurar as filas de processos no banco
