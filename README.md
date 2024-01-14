@@ -1,4 +1,4 @@
-# Laravel---Iniciando
+# Laravel
 Aprendendo a usar o Framework Laravel - PHP
 
 
