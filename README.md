@@ -1,8 +1,8 @@
-# Laravel
+# The PHP Framework for Web Artisans - LARAVEL
 Aprendendo a usar o Framework Laravel - PHP
 
 
-*conceitos estudados até o momento*
+*Conceitos estudados até o momento*
 - Entendo sobre o sistema de roteamento
 - Criação de Controllers
 - Views (Blade, componentes)
