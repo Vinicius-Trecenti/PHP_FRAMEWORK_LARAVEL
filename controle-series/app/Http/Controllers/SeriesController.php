@@ -125,10 +125,6 @@ class SeriesController extends Controller
 
 
 
-
-
-
-
     //     //com erro porem funciona a funcao flash
     //     $request->session()->flash('mensagem.sucesso',"Série '{$seriecriada->nome}' criada com sucesso");
     //     //dd($request->all());
@@ -159,10 +155,20 @@ class SeriesController extends Controller
         //  $serie = $repository->add($request);
         $serie = $this->repository->add($request);
 
+         \App\Events\SeriesCreated::dispatch(
+            $serie->nome,
+            $serie->id,
+            $request->seasonsQty,
+            $request->episodesPerSeason
+        );
+
+        //event($CriandoEvento);
+
         //pegando todos os usuarios
-        $userList = User::all();
+        //$userList = User::all();
 
         //para cada usuario criando um email e enviando
+        /*
         foreach ($userList as $index =>$user){
             $email = new SeriesCreated(
                 $serie->nome,
@@ -177,7 +183,7 @@ class SeriesController extends Controller
             Mail::to($user)->later($when, $email);
             // Mail::to($user)->queue($email);
             //sleep(2);
-        }
+        }*/
 
         // $email = new SeriesCreated(
         //     $serie->nome,
