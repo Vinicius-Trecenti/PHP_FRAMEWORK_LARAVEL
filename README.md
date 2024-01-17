@@ -26,3 +26,4 @@ Aprendendo a usar o Framework Laravel - PHP
 - Ferramenta mailtrap
 - Adiar o envio do e-mail
 - Como configurar as filas de processos no banco
+- Eventos e listeners 
