@@ -150,8 +150,11 @@ class SeriesController extends Controller
     //O laravel se localiza por nomes, podemos passar tanto um model, quanto um int $serie como id
     //ou podemos usar o request normalmente
 
-    public function store(SeriesFormRequest $request, EloquentSeriesRepository $repository){
+    public function store(SeriesFormRequest $request){
 
+
+        $coverPath = $request->file('cover')->store('series_cover', 'public');
+        $request->coverPath = $coverPath;
         //  $serie = $repository->add($request);
         $serie = $this->repository->add($request);
 

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 class Series extends Model
 {
     use HasFactory;
-    protected $fillable = ['nome'];
+    protected $fillable = ['nome', 'cover'];
     
 
     //O nome do metodo é o nome pelo qual queremos acessaar ele
