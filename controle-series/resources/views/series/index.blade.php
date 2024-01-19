@@ -16,7 +16,9 @@
         <li class="list-group-item d-flex justify-content-between align-items-center" >
         
             <div class="d-flex align-items-center">
+                @if($serie->cover)
                 <img src="{{asset('storage/' . $serie->cover)}}" alt="capa serie" class="img-thumbnail me-3" width="100px">
+                @endif
 
                 @auth<a href="{{ route('seasons.index', $serie->id)}}">@endauth
                     {{ $serie->Nome}}

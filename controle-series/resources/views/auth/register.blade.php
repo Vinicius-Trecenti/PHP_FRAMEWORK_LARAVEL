@@ -1,3 +1,5 @@
+<link rel="stylesheet" href= "{{asset('css/app.css')}}">
+<link rel="stylesheet" href= "{{asset('css/estilos.css')}}"> 
 <x-guest-layout>
     <form method="POST" action="{{ route('register') }}">
         @csrf
