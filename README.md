@@ -28,3 +28,7 @@ Aprendendo a usar o Framework Laravel - PHP
 - Como configurar as filas de processos no banco
 - Eventos e listeners 
 - Upload de imagens com laravel
+- Conhendo sobre Testes com laravel - Dusk
+- Introdução a APIs com Laravel
+- Created the first endpoint with Laravel
+- Conhecendo o Postman
