@@ -27,3 +27,4 @@ Aprendendo a usar o Framework Laravel - PHP
 - Adiar o envio do e-mail
 - Como configurar as filas de processos no banco
 - Eventos e listeners 
+- Upload de imagens com laravel
