@@ -12,8 +12,7 @@ use App\Mail\SeriesCreated;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-
-
+use App\Models\Series;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +44,8 @@ Route::get('/email', function(){
 });
 
 require __DIR__.'/auth.php';
+
+
 
 
 // Route::get('/series/edit/{id}', [SeriesController::class,'edit'])->name('series.edit');
