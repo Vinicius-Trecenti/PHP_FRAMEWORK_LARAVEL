@@ -32,3 +32,4 @@ Aprendendo a usar o Framework Laravel - PHP
 - Introdução a APIs com Laravel
 - Created the first endpoint with Laravel
 - Conhecendo o Postman
+- Verbos HTTP corretos para criar um CRUD - API
