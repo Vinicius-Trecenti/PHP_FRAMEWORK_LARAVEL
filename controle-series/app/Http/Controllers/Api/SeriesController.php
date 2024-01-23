@@ -45,4 +45,13 @@ class SeriesController extends Controller
 
         return $series;
     }
+
+    public function getSeasons(Series $series){
+        return response()->json($series->seasons);
+    }
+
+    public function getEpisodes(Series $series){
+        return $series->episodes;
+    }
+
 }

@@ -26,6 +26,10 @@ class Series extends Model
         //                          informando que é para buscar por esse parametro
     }
 
+    public function episodes(){
+        return $this->hasManyThrough(Episode::class, Season::class);
+    }
+
     //criando um escopo de busca para o codigo
     protected static function booted()
     {
