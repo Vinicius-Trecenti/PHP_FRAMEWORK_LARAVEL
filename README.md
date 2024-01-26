@@ -33,3 +33,4 @@ Aprendendo a usar o Framework Laravel - PHP
 - Created the first endpoint with Laravel
 - Conhecendo o Postman
 - Verbos HTTP corretos para criar um CRUD - API
+- Difença entre PUT e PATCH para assistir episodios
