@@ -34,3 +34,7 @@ Aprendendo a usar o Framework Laravel - PHP
 - Conhecendo o Postman
 - Verbos HTTP corretos para criar um CRUD - API
 - Difença entre PUT e PATCH para assistir episodios
+- Entendo filtros na API
+- Aprendendo sobre o paginate
+- Conhecendo Autenticação e Autorização em APIs
+- Conhecendo o Laravel Sanctum

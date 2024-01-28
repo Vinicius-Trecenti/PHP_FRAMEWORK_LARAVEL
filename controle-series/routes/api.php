@@ -3,7 +3,10 @@
 use App\Http\Controllers\Api\SeriesController;
 use App\Models\Episode;
 use App\Models\Series;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,12 +26,39 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Route::get('series', [SeriesController::class, 'index']);
 // Route::post('/series', [SeriesController::class, 'store']);
-Route::apiResource('/series', SeriesController::class);
-Route::get('/series/{series}/seasons', [SeriesController::class, 'getSeasons']);
-Route::get('/series/{series}/episodes', [SeriesController::class, 'getEpisodes']);
-Route::patch('/episodes/{episode}', function (Episode $episode, Request $request){
-    $episode->watched = $request->watched;
-    $episode->save();
 
-    return $episode;
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::apiResource('/series', SeriesController::class);
+
+    Route::get('/series/{series}/seasons', [SeriesController::class, 'getSeasons']);
+
+    Route::get('/series/{series}/episodes', [SeriesController::class, 'getEpisodes']);
+
+    Route::patch('/episodes/{episode}', function (Episode $episode, Request $request){
+        $episode->watched = $request->watched;
+        $episode->save();
+        return $episode;
+    });
+
+    
+}); 
+
+Route::post('/login', function (Request $request){
+    $credentials = $request->only(['email', 'password']);
+    $user = User::whereEmail($credentials['email'])->first();
+
+    // if($user == null || !Hash::check($credentials['password'], $user->password) == false){
+    //     return response()->json('Não autorizado',401 );
+    // }
+    if(Auth::attempt($credentials) === false){
+        return response()->json('Não autorizado',401 );
+    }
+
+    $user = Auth::user();
+    $user->tokens()->delete();
+    $token = $user->createToken('token', ['is_admin']);
+    
+    return response()->json($token->plainTextToken);
 });
